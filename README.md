@@ -1,1 +1,7 @@
-# testetecnicorox
+# Teste técnico para engenheiro de dados - Rox
+
+O teste consiste em um projeto que tem como objetivo a realização de uma pipeline ETL (Extract, Transform, Load) e um relatório feito através do Looker, antigo Data Studio. Os dados do projeto estão em arquivos CSV e localizados localmente, sendo que os mesmos serão ingeridos para o Cloud Storage do GCP (Google Cloud Platform). Essa ingestão será feita através de uma DAG do Airflow, que nada mais é do que uma coleção de tarefas organizadas que você quer programar e executar, coleção essa feita utilizando a linguagem de programação Python. 
+
+Para a ingestão dos arquivos em formato CSV, que estão localizados localmente no computador, temos três opções de serviços, quando falamos de uma ingestão feita utilizando a plataforma de computação em nuvem Google Cloud Platform (GCP): o Cloud Storage, o BigQuery e o Cloud Dataproc. Os 3 serviços tem a capacidade de realizar a tarefa, porém, cada um tem características diferentes que podem ser aplicadas a diversas necessidades, como a capacidade de trabalhar com grandes volumes de dados com escalabilidade e segurança do Cloud Storage, a possibilidade de efetuar análises complexas e com suporte a SQL e ferrametas de BI do BigQuery e a capacidade de processar e transformar dados em escala utilizando Spark ou Hadoop do Cloud Dataproc. Como, ao final do projeto, será feito um dashboard de BI, escolhi o BigQuery para trabalhar, visto seu suporte a ferramentas de BI que no caso do GCP, será o Looker, sendo essa a principal ferramenta de BI do GCP.
+
+Da ingestão ou extração, passamos para a fase da transformação - e limpeza - dos dados. 
