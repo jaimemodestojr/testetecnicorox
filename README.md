@@ -17,13 +17,17 @@ Portanto temos como objetivos, falando de maneira resumida, a criação de uma p
 
 Para a realização do projeto, foi recomendada a utilização da plataforma de computação em nuvem Google Cloud Platform (GCP). As ferramentas e serviços da GCP que serão usados em cada camada serão: na camada bronze, o Cloud Storage da Google Cloud Platform (GCP), na camada prata será o BigQuery e na camada ouro será o Looker. As ferramentas e serviços foram escolhidos por se adequarem melhor aos objetivos e necessidades do projeto.
 
-## Extração (Extract):
 
-Sendo esse o representante da letra "E" da sigla ETL e significando extração, será a fase da pipeline responsável por fazer a ingestão dos dados, quaisquer que sejam as fontes. Nesse caso, temos apenas uma fonte e ela é o computador em que os arquivos se localizam. Usaremos, para isso, um conjunto de ferramentas e serviços da GCP, sendo esses: Cloud Storage, onde os arquivos serão armazenados e Cloud Composer, rodando uma DAG do Airflow, que será responsável por ativar a ingestão desses dados e será programada, em Python, para executar essa ingestão diariamente, no período da manhã.
+## Extrair (Extract):
+
+Sendo esse o representante da letra "E" da sigla ETL e significando extrair, será a fase da pipeline responsável por fazer a ingestão dos dados, quaisquer que sejam as fontes. Nesse caso, temos apenas uma fonte e ela é o computador em que os arquivos se localizam. Usaremos, para isso, um conjunto de ferramentas e serviços da GCP, sendo esses: Cloud Storage, onde os arquivos serão armazenados e Cloud Composer, rodando uma DAG do Airflow, que será responsável por ativar a ingestão desses dados e será programada, em Python, para executar essa ingestão diariamente, no período da manhã.
 
 
-sendo que os mesmos serão ingeridos para o Cloud Storage do GCP (Google Cloud Platform). Essa ingestão será feita através de uma DAG do Airflow, que nada mais é do que uma coleção de tarefas organizadas que você quer programar e executar, coleção essa feita utilizando a linguagem de programação Python. 
+## Transformar (Transform): 
 
-Para a ingestão dos arquivos em formato CSV, que estão localizados localmente no computador, temos três opções de serviços, quando falamos de uma ingestão feita utilizando a plataforma de computação em nuvem Google Cloud Platform (GCP): o Cloud Storage, o BigQuery e o Cloud Dataproc. Os 3 serviços tem a capacidade de realizar a tarefa, porém, cada um tem características diferentes que podem ser aplicadas a diversas necessidades, como a capacidade de trabalhar com grandes volumes de dados com escalabilidade e segurança do Cloud Storage, a possibilidade de efetuar análises complexas e com suporte a SQL e ferrametas de BI do BigQuery e a capacidade de processar e transformar dados em escala utilizando Spark ou Hadoop do Cloud Dataproc. Como, ao final do projeto, será feito um dashboard de BI, escolhi o BigQuery para trabalhar, visto seu suporte a ferramentas de BI que no caso do GCP, será o Looker, sendo essa a principal ferramenta de BI do GCP.
+Sendo esse o representante da letra "T" da sigla ETL e significando transformar, será a fase da pipeline responsável por fazer a limpeza e tratamento dos dados após a ingestão dos mesmos, para que se adequem ao projeto. 
 
-Da ingestão ou extração, passamos para a fase da transformação - e limpeza - dos dados. Para isso, utilizaremos o BigQuery, uma ferramenta da GCP que 
+
+## Carregar (Load):
+
+Sendo esse o representante da letra "L" da sigla ETL e significando carregar, será a fase da pipeline responsável por fazer o carregamento dos dados limpos e trabalhados no banco de dados da camada ouro, ou seja, no banco de dados contendo os dados prontos que serão usados pela ponta final do projeto.
