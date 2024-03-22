@@ -31,3 +31,12 @@ Sendo esse o representante da letra "T" da sigla ETL e significando transformar,
 ## Carregar (Load):
 
 Sendo esse o representante da letra "L" da sigla ETL e significando carregar, será a fase da pipeline responsável por fazer o carregamento dos dados limpos e trabalhados no banco de dados da camada ouro, ou seja, no banco de dados contendo os dados prontos que serão usados pela ponta final do projeto.
+
+
+## Realização da ETL:
+
+- Extração: os arquivos foram extraídos de uma pasta local (do meu computador, no caso) para um bucket no Cloud Storage - chamado ing_dad_bronze, fazendo alusão a camada bronze a qual pertence - do GCP através de um código feito em Python, código esse que também inclui um agendamento. O agendamento no código servirá para realizar a ingestão diariamente, em uma dada hora ditada pelo cliente, ou seja, os dados sempre estarão diariamente atualizados dentro da nuvem. O código pode ser visto acessando o link abaixo:
+
+- Transformação: a limpeza e a transformação dos dados foi feita pelo BigQuery, serviço da GCP, sendo que, primariamente, os dados foram "puxados" do bucket do Cloud Storage para, ai sim, serem trabalhados. Dentro do BigQuery,
+
+- Carregamento: os dados limpos e tratados, ou seja, preparados para o seu uso final, foram carregados em outro bucket do Cloud Storage, agora chamado ing_dad_ouro. Esse bucket será usado pelo Looker para realizar relatórios visuais para que, a partir deles, sejam efetuadas análises e insights.
