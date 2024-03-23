@@ -21,7 +21,7 @@ Para a realização do projeto, foi utilizada a plataforma de computação em nu
 - Em seguida, foi feita a ingestão dos arquivos fornecidos para o teste no bucket criado, em específico, na pasta "dados_recebidos". Essa ingestão foi feita através de um script em Python e, através do serviço do GCP chamado Cron Jobs, foi feito um agendamento, cujo qual ativa, diariamente, o funcionamento desse script, ou seja, automatiza a tarefa de ingestão de dados, mantendo o nosso banco de dados sempre atualizado;
 - Em sequência, foi criado um cluster no serviço Dataproc, onde faremos o processamento deses dados, isto é, transformação e posterior análise dos mesmos;
 
-'''
+```
 ### Código Python:
 
 from google.cloud import storage
@@ -40,22 +40,22 @@ csv_files = list(local_dir.glob("*.csv"))
 
 for filename in csv_files:
     upload_csv(filename.name)
-'''
+```
 
 - O cluster criado, em Hadoop, tem suporte para Jupyter Notebook, que usaremos para tratar os dados. Esse tratamento será feito com Pyspark;
 - Após o passo anterior, carregamos os dados prontos, isto é, tratados e limpos, na outra pasta criada dentro do bucket, a "dados_finais";
 - Acessando a pasta "dados_finais" por um Jupyter Notebook dentro do Dataproc e do ambiente Hadoop, realizamos as queries que o teste solicitou, sendo elas:
 
 1) Escreva uma query que retorna a quantidade de linhas na tabela Sales.SalesOrderDetail pelo campo SalesOrderID, desde que tenham pelo menos três linhas de detalhes:
-'''
+```
 SELECT SalesOrderID as id, 
 COUNT(*) AS qtd 
 FROM Sales.SalesOrderDetail as sod
 GROUP BY SalesOrderID
 HAVING qtd >= 3
-'''
+```
 2) Escreva uma query que ligue as tabelas Sales.SalesOrderDetail, Sales.SpecialOfferProduct e Production.Product e retorne os 3 produtos (Name) mais vendidos (pela soma de OrderQty), agrupados pelo número de dias para manufatura (DaysToManufacture):
-'''
+```
 SELECT * FROM(
   SELECT p.DaysToManufacture AS dtm,
          ROW_NUMBER() OVER(PARTITION BY p.DaysToManufacture ORDER BY sum(sod.OrderQty) DESC) as pos,
@@ -67,9 +67,9 @@ SELECT * FROM(
   GROUP BY name
   ) as by_pos
 WHERE pos <= 3
-'''
+```
 3 Escreva uma query ligando as tabelas Person.Person, Sales.Customer e Sales.SalesOrderHeader de forma a obter uma lista de nomes de clientes e uma contagem de pedidos efetuados:
-'''
+```
 SELECT c.CustomerID as id, 
        CONCAT(p.FirstName, ' ', p.LastName) as name, 
        COUNT(*) AS qtd 
@@ -78,9 +78,9 @@ INNER JOIN	Sales.Customer as c ON soh.CustomerID = c.CustomerID
 INNER JOIN Person.Person as p ON c.PersonID = p.BusinessEntityID 
 GROUP BY c.PersonID
 ORDER BY qtd DESC
-'''
+```
 4) Escreva uma query usando as tabelas Sales.SalesOrderHeader, Sales.SalesOrderDetail e Production.Product, de forma a obter a soma total de produtos (OrderQty) por ProductID e OrderDate:
-'''
+```
 SELECT sod.ProductID as id, 
        p.Name as name,
        sum(OrderQty) OVER(PARTITION BY sod.ProductID) AS qtd_id,
@@ -91,11 +91,11 @@ INNER JOIN Sales.SalesOrderHeader as soh ON sod.SalesOrderID  = soh.SalesOrderID
 INNER JOIN Production.Products AS p ON sod.ProductID = p.ProductID 
 GROUP BY sod.ProductID, soh.OrderDate
 ORDER BY soh.OrderDate
-'''
+```
 5) Escreva uma query mostrando os campos SalesOrderID, OrderDate e TotalDue da tabela Sales.SalesOrderHeader. Obtenha apenas as linhas onde a ordem tenha sido feita durante o mês de setembro/2011 e o total devido esteja acima de 1.000. Ordene pelo total devido decrescente:
-'''
+```
 SELECT SalesOrderID, DATE(OrderDate), TotalDue 
 FROM SalesOrderHeader AS soh 
 WHERE DATE(OrderDate) BETWEEN DATE('2011-09-01') AND DATE('2011-09-30') AND TotalDue > 1.000
 ORDER BY TotalDue DESC
-'''
+```
