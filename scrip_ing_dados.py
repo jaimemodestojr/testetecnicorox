@@ -1,19 +1,16 @@
-import gsutil
-import schedule
-import time
+from google.cloud import storage
+from pathlib import Path
 
-def upload_file():
-    local_file_path = CAMINHO_LOCAL_DOS_ARQUIVOS"
-    bucket_name = "ing_dad_bronze"
-    destination_file_path = "CAMINHO_NA_NUVEM_DOS_ARQUIVOS"
+bucket_name = "dados_rox"
+local_dir = Path("caminho/da/pasta/local/contendo/os/arquivos/fornecidos/pelo/teste")
+client = storage.Client()
+bucket = client.bucket(bucket_name)
 
-    # Fazer upload do arquivo para o Cloud Storage
-    gsutil.cp(local_file_path, f"gs://{bucket_name}/{destination_file_path}")
+def upload_csv(filename):
+    blob = bucket.blob(filename)
+    blob.upload_from_filename(local_dir / filename)
 
-# Agendar a execução da função upload_file() diariamente às 00:00
-schedule.every().day.at("00:00").do(upload_file)
+csv_files = list(local_dir.glob("*.csv"))
 
-# Iniciar o loop de agendamento
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+for filename in csv_files:
+    upload_csv(filename.name)
